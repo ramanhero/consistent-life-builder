@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -132,6 +131,11 @@ const Settings = () => {
       title: 'Preferences Saved',
       description: 'Your preferences have been updated successfully.',
     });
+  };
+
+  const handleThemeChange = (value: string) => {
+    setTheme(value as 'light' | 'dark' | 'system');
+    preferencesForm.setValue('theme', value);
   };
 
   const onNotificationsSubmit = (data: NotificationsFormValues) => {
@@ -291,7 +295,10 @@ const Settings = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Theme</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select 
+                              onValueChange={(value) => handleThemeChange(value)} 
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select theme" />
