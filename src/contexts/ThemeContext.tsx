@@ -16,9 +16,9 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Get saved theme from localStorage, default to 'system'
-    const savedTheme = localStorage.getItem('theme');
-    return (savedTheme as Theme) || 'light';
+    // Get saved theme from localStorage, default to 'light'
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    return savedTheme || 'light';
   });
 
   // Apply theme changes
@@ -41,10 +41,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       // Apply selected theme
       root.classList.add(theme);
     }
+    
+    console.log('Theme changed to:', theme);
   }, [theme]);
 
+  const value = {
+    theme,
+    setTheme,
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
