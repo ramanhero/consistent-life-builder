@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useToast } from '@/components/ui/use-toast';
 import {
   Form,
@@ -67,6 +68,7 @@ type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
 
 const Settings = () => {
   const { user } = useAuth();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
 
   const profileForm = useForm<ProfileFormValues>({
@@ -89,7 +91,7 @@ const Settings = () => {
   const preferencesForm = useForm<PreferencesFormValues>({
     resolver: zodResolver(preferencesFormSchema),
     defaultValues: {
-      theme: 'light',
+      theme: theme,
       language: 'english',
       timezone: 'UTC',
     },
@@ -123,6 +125,9 @@ const Settings = () => {
   };
 
   const onPreferencesSubmit = (data: PreferencesFormValues) => {
+    // Update theme
+    setTheme(data.theme as 'light' | 'dark' | 'system');
+    
     toast({
       title: 'Preferences Saved',
       description: 'Your preferences have been updated successfully.',
