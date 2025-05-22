@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { ClipboardList } from 'lucide-react';
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -11,8 +11,11 @@ const Header = () => {
   return (
     <header className="py-4 border-b">
       <div className="container max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-primary">
-          Daily<span className="text-foreground">Habit</span>
+        <Link to="/" className="flex items-center gap-2">
+          <ClipboardList className="h-7 w-7 text-primary" />
+          <span className="text-2xl font-bold text-primary">
+            Daily<span className="text-foreground">Habit</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
