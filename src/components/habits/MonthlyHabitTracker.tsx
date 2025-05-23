@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useHabits } from '@/contexts/HabitsContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -79,12 +78,7 @@ const MonthlyHabitTracker = () => {
   };
 
   const renderCalendarDays = () => {
-    const days = [];
     const daysInMonth = getDaysInMonth(currentMonth);
-    const firstDayOfMonth = getDay(startOfMonth(currentMonth));
-    
-    // Render day headers (M, T, W, etc.)
-    const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     
     return (
       <div className="w-full overflow-x-auto">
@@ -145,12 +139,13 @@ const MonthlyHabitTracker = () => {
                     return (
                       <td 
                         key={day} 
-                        className={`p-0 text-center ${bgColorClass}`}
+                        className={`p-0 text-center ${bgColorClass} cursor-pointer`}
                         onClick={() => {
                           // Only mark if the date is today or in the past
                           const today = new Date();
                           if (cellDate <= today) {
-                            markHabitComplete(habit.id);
+                            const dateString = cellDate.toISOString().split('T')[0];
+                            markHabitComplete(habit.id, dateString);
                           }
                         }}
                       >

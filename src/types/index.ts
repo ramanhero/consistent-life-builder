@@ -15,6 +15,7 @@ export interface Habit {
   notes?: string;
   createdAt: string;
   completedDates: string[];
+  goal?: number;
   reminder?: {
     enabled: boolean;
     time?: string;
