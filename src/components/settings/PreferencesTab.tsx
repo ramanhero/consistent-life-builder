@@ -131,10 +131,13 @@ const PreferencesTab = () => {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="english">English</SelectItem>
-                      <SelectItem value="spanish">Español</SelectItem>
-                      <SelectItem value="french">Français</SelectItem>
-                      <SelectItem value="german">Deutsch</SelectItem>
-                      <SelectItem value="japanese">日本語</SelectItem>
+                      <SelectItem value="hindi">हिन्दी (Hindi)</SelectItem>
+                      <SelectItem value="bengali">বাংলা (Bengali)</SelectItem>
+                      <SelectItem value="tamil">தமிழ் (Tamil)</SelectItem>
+                      <SelectItem value="telugu">తెలుగు (Telugu)</SelectItem>
+                      <SelectItem value="marathi">मराठी (Marathi)</SelectItem>
+                      <SelectItem value="gujarati">ગુજરાતી (Gujarati)</SelectItem>
+                      <SelectItem value="odia">ଓଡିଆ (Odia)</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -160,6 +163,7 @@ const PreferencesTab = () => {
                       <SelectItem value="CST">Central Time (CST)</SelectItem>
                       <SelectItem value="MST">Mountain Time (MST)</SelectItem>
                       <SelectItem value="PST">Pacific Time (PST)</SelectItem>
+                      <SelectItem value="IST">Indian Standard Time (IST)</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
