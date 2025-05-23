@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { HabitsProvider } from "@/contexts/HabitsContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 // Pages
 import Home from "./pages/Home";
@@ -77,13 +78,15 @@ const App = () => (
     <BrowserRouter>
       <TooltipProvider>
         <ThemeProvider>
-          <AuthProvider>
-            <HabitsProvider>
-              <Toaster />
-              <Sonner />
-              <AppContent />
-            </HabitsProvider>
-          </AuthProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <HabitsProvider>
+                <Toaster />
+                <Sonner />
+                <AppContent />
+              </HabitsProvider>
+            </AuthProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </TooltipProvider>
     </BrowserRouter>

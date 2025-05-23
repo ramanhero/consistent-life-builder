@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { ClipboardList, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -29,16 +31,16 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors">
-                Dashboard
+                {t('nav.dashboard')}
               </Link>
               <Link to="/habits" className="text-foreground hover:text-primary transition-colors">
-                Habits
+                {t('nav.habits')}
               </Link>
               <Link to="/insights" className="text-foreground hover:text-primary transition-colors">
-                Insights
+                {t('nav.insights')}
               </Link>
               <Link to="/settings" className="text-foreground hover:text-primary transition-colors">
-                Settings
+                {t('nav.settings')}
               </Link>
               <Button 
                 variant="outline" 
@@ -47,7 +49,7 @@ const Header = () => {
                   navigate('/');
                 }}
               >
-                Log Out
+                {t('nav.logout')}
               </Button>
               <Button
                 variant="ghost"
@@ -61,9 +63,9 @@ const Header = () => {
           ) : (
             <>
               <Link to="/login" className="text-foreground hover:text-primary transition-colors">
-                Log In
+                {t('nav.login')}
               </Link>
-              <Button onClick={() => navigate('/signup')}>Get Started</Button>
+              <Button onClick={() => navigate('/signup')}>{t('nav.getStarted')}</Button>
               <Button
                 variant="ghost"
                 size="icon"
