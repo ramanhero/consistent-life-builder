@@ -8,12 +8,15 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { HabitsProvider } from "@/contexts/HabitsContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/shared/AppSidebar";
 
 // Pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Today from "./pages/Today";
 import Habits from "./pages/Habits";
 import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
@@ -39,37 +42,60 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AppContent = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      
-      {/* Protected routes */}
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/habits" element={
-        <ProtectedRoute>
-          <Habits />
-        </ProtectedRoute>
-      } />
-      <Route path="/insights" element={
-        <ProtectedRoute>
-          <Insights />
-        </ProtectedRoute>
-      } />
-      <Route path="/settings" element={
-        <ProtectedRoute>
-          <Settings />
-        </ProtectedRoute>
-      } />
-      
-      {/* Catch-all route */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <div className="min-h-screen flex w-full">
+      {isAuthenticated ? (
+        <SidebarProvider>
+          <AppSidebar />
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+              
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/today" element={
+                <ProtectedRoute>
+                  <Today />
+                </ProtectedRoute>
+              } />
+              <Route path="/habits" element={
+                <ProtectedRoute>
+                  <Habits />
+                </ProtectedRoute>
+              } />
+              <Route path="/insights" element={
+                <ProtectedRoute>
+                  <Insights />
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </SidebarProvider>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      )}
+    </div>
   );
 };
 

@@ -1,14 +1,13 @@
 
 import React from 'react';
 import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
 import WeeklyChart from '@/components/stats/WeeklyChart';
 import MonthlyHabitTracker from '@/components/habits/MonthlyHabitTracker';
 import { useHabits } from '@/contexts/HabitsContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Award, Calendar, BarChart } from 'lucide-react';
+import { Award, Calendar, BarChart, Trophy, Target, Zap } from 'lucide-react';
 
 const Insights = () => {
   const { habits, isLoading } = useHabits();
@@ -40,6 +39,34 @@ const Insights = () => {
     return totalPossibleDays > 0 
       ? Math.round((totalCompletions / totalPossibleDays) * 100) 
       : 0;
+  };
+
+  const getTodayCompletions = () => {
+    const today = new Date().toISOString().split('T')[0];
+    return habits.filter(habit => habit.completedDates.includes(today)).length;
+  };
+
+  const getWeeklyCompletions = () => {
+    const today = new Date();
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay());
+    
+    return habits.reduce((total, habit) => {
+      const weekCompletions = habit.completedDates.filter(date => {
+        const completionDate = new Date(date);
+        return completionDate >= weekStart && completionDate <= today;
+      });
+      return total + weekCompletions.length;
+    }, 0);
+  };
+
+  const getKarmaScore = () => {
+    // Calculate karma based on consistency and completion rates
+    const streaks = habits.map(h => h.streak);
+    const avgStreak = streaks.length > 0 ? streaks.reduce((a, b) => a + b, 0) / streaks.length : 0;
+    const completionRate = getCompletionRate();
+    
+    return Math.round((avgStreak * 10) + (completionRate * 2));
   };
 
   return (
@@ -116,6 +143,69 @@ const Insights = () => {
               <CardContent>
                 <p className="text-muted-foreground text-sm">
                   Percentage of habit completions since you started
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Daily, Weekly, Karma section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="shadow-sm">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-full flex items-center justify-center mb-2">
+                  <Target className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <CardTitle className="text-lg">Daily</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                  {getTodayCompletions()}/{habits.length}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Daily goal completed: {habits.length > 0 ? Math.round((getTodayCompletions() / habits.length) * 100) : 0}%
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {getTodayCompletions() === habits.length ? "Well done!" : "Keep going!"}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-sm">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center mb-2">
+                  <Calendar className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <CardTitle className="text-lg">Weekly</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+                  {getWeeklyCompletions()}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Habits completed this week
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {getWeeklyCompletions() > 0 ? "Great progress!" : "Start your week strong!"}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-sm">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-12 h-12 bg-purple-100 dark:bg-purple-950 rounded-full flex items-center justify-center mb-2">
+                  <Zap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <CardTitle className="text-lg">Karma</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                  {getKarmaScore()}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Your consistency score
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {getKarmaScore() > 100 ? "Amazing!" : getKarmaScore() > 50 ? "Good!" : "Keep building!"}
                 </p>
               </CardContent>
             </Card>

@@ -139,17 +139,22 @@ const MonthlyHabitTracker = () => {
                     return (
                       <td 
                         key={day} 
-                        className={`p-0 text-center ${bgColorClass} cursor-pointer`}
-                        onClick={() => {
+                        className={`p-0 text-center ${bgColorClass} cursor-pointer hover:bg-muted/50 transition-colors`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          
                           // Only mark if the date is today or in the past
                           const today = new Date();
+                          today.setHours(23, 59, 59, 999); // Set to end of today
+                          
                           if (cellDate <= today) {
                             const dateString = cellDate.toISOString().split('T')[0];
                             markHabitComplete(habit.id, dateString);
                           }
                         }}
                       >
-                        <div className="w-full h-full flex items-center justify-center p-2">
+                        <div className="w-full h-full flex items-center justify-center p-2 min-h-[2.5rem]">
                           {isCompleted ? (
                             <CheckCircle2 className="h-4 w-4 text-primary" />
                           ) : (

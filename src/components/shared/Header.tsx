@@ -1,85 +1,34 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { ClipboardList, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { Button } from '@/components/ui/button';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { theme, setTheme } = useTheme();
-  const { t } = useLanguage();
-  const navigate = useNavigate();
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
-    <header className="py-4 border-b">
+    <header className="py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2">
-          <ClipboardList className="h-7 w-7 text-primary" />
-          <span className="text-2xl font-bold text-primary">
-            Daily<span className="text-foreground">Habit</span>
-          </span>
-        </Link>
+        <div className="flex items-center gap-4">
+          {isAuthenticated && <SidebarTrigger />}
+          <Link to="/" className="flex items-center gap-2">
+            <ClipboardList className="h-7 w-7 text-primary" />
+            <span className="text-2xl font-bold text-primary">
+              Daily<span className="text-foreground">Habit</span>
+            </span>
+          </Link>
+        </div>
 
-        <nav className="hidden md:flex items-center space-x-6">
-          {isAuthenticated ? (
-            <>
-              <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors">
-                {t('nav.dashboard')}
-              </Link>
-              <Link to="/habits" className="text-foreground hover:text-primary transition-colors">
-                {t('nav.habits')}
-              </Link>
-              <Link to="/insights" className="text-foreground hover:text-primary transition-colors">
-                {t('nav.insights')}
-              </Link>
-              <Link to="/settings" className="text-foreground hover:text-primary transition-colors">
-                {t('nav.settings')}
-              </Link>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
-              >
-                {t('nav.logout')}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-foreground hover:text-primary transition-colors">
-                {t('nav.login')}
-              </Link>
-              <Button onClick={() => navigate('/signup')}>{t('nav.getStarted')}</Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-            </>
-          )}
-        </nav>
-
-        {/* Mobile menu button */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -87,22 +36,6 @@ const Header = () => {
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
-          <Button variant="ghost" className="text-foreground">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
           </Button>
         </div>
       </div>
