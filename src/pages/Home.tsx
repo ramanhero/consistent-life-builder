@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import { useAuth } from '@/contexts/AuthContext';
+import { CheckCircle, Star, Users, TrendingUp } from 'lucide-react';
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
@@ -15,40 +15,144 @@ const Home = () => {
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-20 px-4 bg-gradient-to-b from-coral-50 to-background">
-          <div className="container max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-center lg:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                  Master Your Habits, Transform Your Life
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8">
-                  Join millions building better routines with Daily Habit Tracker—simple, smart, and free.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                  <Button asChild size="lg" className="text-lg">
+        <section className="relative py-24 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5 overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl"></div>
+          </div>
+          
+          <div className="container max-w-7xl mx-auto relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="text-center lg:text-left space-y-8">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium">
+                  <Star className="w-4 h-4 fill-current" />
+                  <span>Join 50,000+ habit builders</span>
+                </div>
+                
+                {/* Main heading */}
+                <div className="space-y-4">
+                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                    Build
+                    <span className="text-primary"> Better</span>
+                    <br />
+                    Habits
+                    <span className="text-secondary"> Daily</span>
+                  </h1>
+                  <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
+                    Transform your life one habit at a time. Track, analyze, and celebrate your progress with our intelligent habit tracker.
+                  </p>
+                </div>
+
+                {/* Features list */}
+                <div className="flex flex-col sm:flex-row gap-6 text-left">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Free forever</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">No ads</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                    <span className="text-muted-foreground">Privacy first</span>
+                  </div>
+                </div>
+                
+                {/* CTA buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                  <Button asChild size="lg" className="text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     <Link to={isAuthenticated ? "/dashboard" : "/signup"}>
-                      {isAuthenticated ? "Go to Dashboard" : "Get Started"}
+                      {isAuthenticated ? "Go to Dashboard" : "Start Building Habits"}
                     </Link>
                   </Button>
                   {!isAuthenticated && (
-                    <Button asChild variant="outline" size="lg" className="text-lg">
-                      <Link to="/login">Log In</Link>
+                    <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 rounded-xl border-2 hover:bg-accent/50 transition-all duration-300">
+                      <Link to="/login">Sign In</Link>
                     </Button>
                   )}
                 </div>
+
+                {/* Social proof */}
+                <div className="flex items-center gap-6 pt-8">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">50K+ users</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">2M+ habits tracked</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    ))}
+                    <span className="text-sm text-muted-foreground ml-2">4.9/5</span>
+                  </div>
+                </div>
               </div>
               
-              <div className="relative">
-                <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1517021897933-0e0319cfbc28?q=80&w=2070&auto=format&fit=crop" 
-                    alt="Person tracking habits" 
-                    className="w-full h-auto object-cover"
-                  />
+              {/* Hero image */}
+              <div className="relative lg:pl-8">
+                <div className="relative">
+                  {/* Main image container */}
+                  <div className="relative z-20 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-secondary/20 p-8">
+                      {/* Mock app interface */}
+                      <div className="bg-background rounded-xl shadow-lg h-full p-6 space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-lg">Today's Habits</h3>
+                          <div className="text-2xl">🔥</div>
+                        </div>
+                        
+                        {/* Mock habit items */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+                            <div className="w-5 h-5 bg-primary rounded-full"></div>
+                            <span className="font-medium">Morning Exercise</span>
+                            <div className="ml-auto text-primary font-bold">✓</div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 bg-secondary/5 rounded-lg">
+                            <div className="w-5 h-5 bg-secondary rounded-full"></div>
+                            <span className="font-medium">Read 30 minutes</span>
+                            <div className="ml-auto text-secondary font-bold">✓</div>
+                          </div>
+                          <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                            <div className="w-5 h-5 bg-muted-foreground/20 rounded-full"></div>
+                            <span className="font-medium text-muted-foreground">Meditation</span>
+                            <div className="ml-auto w-5 h-5 border-2 border-muted-foreground/20 rounded-full"></div>
+                          </div>
+                        </div>
+                        
+                        {/* Progress indicator */}
+                        <div className="pt-4">
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Daily Progress</span>
+                            <span className="font-semibold">67%</span>
+                          </div>
+                          <div className="w-full bg-muted/30 rounded-full h-2">
+                            <div className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style={{ width: '67%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Floating elements */}
+                  <div className="absolute -top-4 -right-4 z-30 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg text-sm font-medium">
+                    7 day streak! 🎉
+                  </div>
+                  <div className="absolute -bottom-4 -left-4 z-30 bg-secondary text-secondary-foreground px-4 py-2 rounded-full shadow-lg text-sm font-medium">
+                    +150 XP earned
+                  </div>
                 </div>
-                <div className="absolute -bottom-6 -right-6 w-64 h-64 bg-primary/10 rounded-full -z-10"></div>
-                <div className="absolute -top-6 -left-6 w-32 h-32 bg-secondary/10 rounded-full -z-10"></div>
+                
+                {/* Background decorative shapes */}
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-primary/10 rounded-full -z-10"></div>
+                <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-secondary/10 rounded-full -z-10"></div>
               </div>
             </div>
           </div>
