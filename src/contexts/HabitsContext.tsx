@@ -10,7 +10,7 @@ interface HabitsContextType {
   addHabit: (habit: Omit<Habit, 'id' | 'createdAt' | 'completedDates'>) => void;
   updateHabit: (id: string, habitData: Partial<Habit>) => void;
   deleteHabit: (id: string) => void;
-  markHabitComplete: (id: string) => void;
+  markHabitComplete: (id: string, date?: string) => void; // Updated to accept optional date
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined);
@@ -24,9 +24,18 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchHabits = async () => {
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setHabits(mockHabits);
+        // Try to get habits from localStorage first
+        const savedHabits = localStorage.getItem('habitTrackerHabits');
+        
+        if (savedHabits) {
+          setHabits(JSON.parse(savedHabits));
+        } else {
+          // If not found, use mock data
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          setHabits(mockHabits);
+          // Save mock data to localStorage
+          localStorage.setItem('habitTrackerHabits', JSON.stringify(mockHabits));
+        }
       } catch (error) {
         console.error('Error fetching habits:', error);
         toast({
@@ -41,6 +50,13 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
 
     fetchHabits();
   }, [toast]);
+
+  // Save habits to localStorage whenever they change
+  useEffect(() => {
+    if (!isLoading && habits.length) {
+      localStorage.setItem('habitTrackerHabits', JSON.stringify(habits));
+    }
+  }, [habits, isLoading]);
 
   const addHabit = (habitData: Omit<Habit, 'id' | 'createdAt' | 'completedDates'>) => {
     const newHabit: Habit = {
@@ -78,26 +94,32 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const markHabitComplete = (id: string) => {
-    const today = new Date().toISOString().split('T')[0];
+  const markHabitComplete = (id: string, date?: string) => {
+    const today = date || new Date().toISOString().split('T')[0];
     
     setHabits(prevHabits =>
       prevHabits.map(habit => {
         if (habit.id === id) {
-          // Check if already completed today
+          // Check if already completed for the specified date
           if (habit.completedDates.includes(today)) {
-            return habit;
+            // If already completed, remove it (toggle functionality)
+            return {
+              ...habit,
+              completedDates: habit.completedDates.filter(d => d !== today)
+            };
           }
           
+          // Add the completion date
+          const updatedCompletedDates = [...habit.completedDates, today].sort();
+          
           // Calculate streak
-          const sortedDates = [...habit.completedDates, today].sort();
           let newStreak = 1;
           
           // For daily habits, check consecutive days
           if (habit.frequency === 'Daily') {
-            for (let i = sortedDates.length - 1; i > 0; i--) {
-              const currentDate = new Date(sortedDates[i]);
-              const prevDate = new Date(sortedDates[i - 1]);
+            for (let i = updatedCompletedDates.length - 1; i > 0; i--) {
+              const currentDate = new Date(updatedCompletedDates[i]);
+              const prevDate = new Date(updatedCompletedDates[i - 1]);
               
               // Calculate difference in days
               const diffTime = currentDate.getTime() - prevDate.getTime();
@@ -112,12 +134,12 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
           } 
           // For weekly habits, just count the number of weeks
           else if (habit.frequency === 'Weekly') {
-            newStreak = Math.ceil(sortedDates.length / 7);
+            newStreak = Math.ceil(updatedCompletedDates.length / 7);
           }
           
           return {
             ...habit,
-            completedDates: [...habit.completedDates, today],
+            completedDates: updatedCompletedDates,
             streak: newStreak,
           };
         }
@@ -129,10 +151,10 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
     const completedHabit = habits.find(h => h.id === id);
     
     toast({
-      title: 'Habit Completed!',
+      title: 'Habit Updated!',
       description: completedHabit 
-        ? `Great job completing "${completedHabit.name}" today!` 
-        : 'Great job completing your habit!',
+        ? `"${completedHabit.name}" status has been updated` 
+        : 'Habit status has been updated',
     });
   };
 

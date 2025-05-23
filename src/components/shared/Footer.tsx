@@ -1,12 +1,22 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    // Only show footer on the dashboard page
+    const hideFooterPages = ['/habits', '/insights', '/settings'];
+    setShowFooter(!hideFooterPages.includes(location.pathname));
+  }, [location.pathname]);
+
+  if (!showFooter) return null;
 
   return (
-    <footer className="bg-accent py-8 mt-auto">
+    <footer className="bg-card py-8 mt-auto border-t border-border shadow-sm">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="mb-6 md:mb-0">
