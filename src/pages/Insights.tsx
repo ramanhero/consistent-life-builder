@@ -56,7 +56,7 @@ const Insights = () => {
   return <div className="flex flex-col min-h-screen">
       <Header />
       
-      <main className="flex-grow py-8 px-4 ml-16 mx-px">
+      <main className="flex-grow py-8 px-4 ml-17 mx-0">
         <div className="container max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>
