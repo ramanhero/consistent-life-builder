@@ -1,17 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
 import { BarChart, Calendar, LogOut, Settings, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -47,6 +37,7 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -54,39 +45,52 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild 
-                    isActive={location.pathname === item.url}
-                    tooltip={item.title}
-                  >
-                    <Link to={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleLogout} tooltip="Logout">
-              <LogOut className="h-4 w-4" />
-              <span>Logout</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+    <div 
+      className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-background border-r border-border z-10 transition-all duration-300 ease-in-out ${
+        isHovered ? 'w-64' : 'w-16'
+      } shadow-lg`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex flex-col h-full">
+        <div className="flex-1 p-2">
+          <nav className="space-y-2">
+            {menuItems.map((item) => (
+              <Link
+                key={item.title}
+                to={item.url}
+                className={`flex items-center gap-3 px-3 py-3 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground ${
+                  location.pathname === item.url 
+                    ? 'bg-accent text-accent-foreground font-medium' 
+                    : 'text-muted-foreground'
+                }`}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                <span className={`transition-opacity duration-300 ${
+                  isHovered ? 'opacity-100' : 'opacity-0'
+                } ${isHovered ? 'block' : 'hidden'}`}>
+                  {item.title}
+                </span>
+              </Link>
+            ))}
+          </nav>
+        </div>
+        
+        <div className="p-2 border-t border-border">
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className={`w-full justify-start gap-3 px-3 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground`}
+          >
+            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <span className={`transition-opacity duration-300 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            } ${isHovered ? 'block' : 'hidden'}`}>
+              Logout
+            </span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

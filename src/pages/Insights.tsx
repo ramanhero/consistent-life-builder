@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/shared/Header';
 import WeeklyChart from '@/components/stats/WeeklyChart';
@@ -73,7 +72,7 @@ const Insights = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      <main className="flex-grow py-8 px-4">
+      <main className="flex-grow py-8 px-4 ml-16">
         <div className="container max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>

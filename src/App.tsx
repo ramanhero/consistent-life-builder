@@ -8,8 +8,8 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { HabitsProvider } from "@/contexts/HabitsContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/shared/AppSidebar";
+import Header from "@/components/shared/Header";
 
 // Pages
 import Home from "./pages/Home";
@@ -45,48 +45,51 @@ const AppContent = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen flex w-full">
+    <div className="min-h-screen flex flex-col w-full">
       {isAuthenticated ? (
-        <SidebarProvider>
-          <AppSidebar />
-          <div className="flex-1">
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
-              
-              {/* Protected routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/today" element={
-                <ProtectedRoute>
-                  <Today />
-                </ProtectedRoute>
-              } />
-              <Route path="/habits" element={
-                <ProtectedRoute>
-                  <Habits />
-                </ProtectedRoute>
-              } />
-              <Route path="/insights" element={
-                <ProtectedRoute>
-                  <Insights />
-                </ProtectedRoute>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+        <>
+          <Header />
+          <div className="flex flex-1 relative">
+            <AppSidebar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+                
+                {/* Protected routes */}
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/today" element={
+                  <ProtectedRoute>
+                    <Today />
+                  </ProtectedRoute>
+                } />
+                <Route path="/habits" element={
+                  <ProtectedRoute>
+                    <Habits />
+                  </ProtectedRoute>
+                } />
+                <Route path="/insights" element={
+                  <ProtectedRoute>
+                    <Insights />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
           </div>
-        </SidebarProvider>
+        </>
       ) : (
         <Routes>
           <Route path="/" element={<Home />} />
