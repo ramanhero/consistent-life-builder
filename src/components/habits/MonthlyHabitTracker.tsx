@@ -7,26 +7,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { format, addMonths, subMonths, getDaysInMonth, startOfMonth, getDay, isSameDay } from 'date-fns';
-
 interface Note {
   id: string;
   date: string;
   content: string;
 }
-
 const MonthlyHabitTracker = () => {
   const {
     habits,
     markHabitComplete
   } = useHabits();
-  
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNoteOpen, setNewNoteOpen] = useState(false);
   const [noteContent, setNoteContent] = useState('');
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [viewNoteOpen, setViewNoteOpen] = useState(false);
-
   useEffect(() => {
     // Load notes from localStorage
     const savedNotes = localStorage.getItem('habitTrackerNotes');
@@ -34,20 +30,16 @@ const MonthlyHabitTracker = () => {
       setNotes(JSON.parse(savedNotes));
     }
   }, []);
-
   const saveNotes = (updatedNotes: Note[]) => {
     setNotes(updatedNotes);
     localStorage.setItem('habitTrackerNotes', JSON.stringify(updatedNotes));
   };
-
   const handlePreviousMonth = () => {
     setCurrentMonth(prevMonth => subMonths(prevMonth, 1));
   };
-
   const handleNextMonth = () => {
     setCurrentMonth(prevMonth => addMonths(prevMonth, 1));
   };
-
   const handleAddNote = () => {
     if (noteContent.trim()) {
       const newNote: Note = {
@@ -61,18 +53,15 @@ const MonthlyHabitTracker = () => {
       setNewNoteOpen(false);
     }
   };
-
   const handleDeleteNote = (id: string) => {
     const updatedNotes = notes.filter(note => note.id !== id);
     saveNotes(updatedNotes);
     setViewNoteOpen(false);
   };
-
   const handleViewNote = (note: Note) => {
     setSelectedNote(note);
     setViewNoteOpen(true);
   };
-
   const renderCalendarDays = () => {
     const daysInMonth = getDaysInMonth(currentMonth);
     return <div className="w-full overflow-x-auto">
@@ -96,9 +85,9 @@ const MonthlyHabitTracker = () => {
             });
             return <tr key={habit.id} className="border-b border-border hover:bg-muted/20">
                   <td className="p-2 font-medium pl-4">{habit.name}</td>
-                  {[...Array(daysInMonth)].map((_, dayIndex) => {
-                // Create a date object for this cell - using dayIndex + 1 for the actual day
-                const cellDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dayIndex + 1);
+                  {[...Array(daysInMonth)].map((_, day) => {
+                // Create a date object for this cell
+                const cellDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day + 1);
 
                 // Check if this day is completed
                 const isCompleted = habit.completedDates.some(date => isSameDay(new Date(date), cellDate));
@@ -118,7 +107,7 @@ const MonthlyHabitTracker = () => {
                   default:
                     bgColorClass = isCompleted ? 'bg-primary/10' : '';
                 }
-                return <td key={dayIndex} className={`p-0 text-center ${bgColorClass} cursor-pointer hover:bg-muted/50 transition-colors`} onClick={e => {
+                return <td key={day} className={`p-0 text-center ${bgColorClass} cursor-pointer hover:bg-muted/50 transition-colors`} onClick={e => {
                   e.preventDefault();
                   e.stopPropagation();
 
@@ -148,7 +137,6 @@ const MonthlyHabitTracker = () => {
         </table>
       </div>;
   };
-
   return <div className="space-y-8">
       <Card className="shadow-sm">
         <CardHeader className="pb-2 pt-6 px-6">
@@ -248,5 +236,4 @@ const MonthlyHabitTracker = () => {
       </Dialog>
     </div>;
 };
-
 export default MonthlyHabitTracker;

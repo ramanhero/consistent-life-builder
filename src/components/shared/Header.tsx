@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ClipboardList, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Button } from '@/components/ui/button';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const Header = () => {
   const { isAuthenticated } = useAuth();
@@ -15,9 +16,10 @@ const Header = () => {
   };
 
   return (
-    <header className="py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full z-50">
+    <header className="py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-7xl mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
+          {isAuthenticated && <SidebarTrigger />}
           <Link to="/" className="flex items-center gap-2">
             <ClipboardList className="h-7 w-7 text-primary" />
             <span className="text-2xl font-bold text-primary">
