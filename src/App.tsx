@@ -45,46 +45,48 @@ const AppContent = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen flex w-full">
+    <div className="min-h-screen w-full">
       {isAuthenticated ? (
         <SidebarProvider>
-          <AppSidebar />
-          <div className="flex-1">
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
-              
-              {/* Protected routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/today" element={
-                <ProtectedRoute>
-                  <Today />
-                </ProtectedRoute>
-              } />
-              <Route path="/habits" element={
-                <ProtectedRoute>
-                  <Habits />
-                </ProtectedRoute>
-              } />
-              <Route path="/insights" element={
-                <ProtectedRoute>
-                  <Insights />
-                </ProtectedRoute>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+          <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            <div className="flex-1">
+              <Routes>
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+                
+                {/* Protected routes */}
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/today" element={
+                  <ProtectedRoute>
+                    <Today />
+                  </ProtectedRoute>
+                } />
+                <Route path="/habits" element={
+                  <ProtectedRoute>
+                    <Habits />
+                  </ProtectedRoute>
+                } />
+                <Route path="/insights" element={
+                  <ProtectedRoute>
+                    <Insights />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
           </div>
         </SidebarProvider>
       ) : (
