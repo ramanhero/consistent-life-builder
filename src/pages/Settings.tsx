@@ -1,7 +1,5 @@
 
 import React from 'react';
-import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProfileTab from '@/components/settings/ProfileTab';
@@ -14,8 +12,6 @@ const Settings = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      
       <main className="flex-grow py-8 px-4">
         <div className="container max-w-5xl mx-auto">
           <div className="mb-8">
@@ -51,8 +47,6 @@ const Settings = () => {
           </Tabs>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

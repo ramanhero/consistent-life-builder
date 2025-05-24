@@ -1,17 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import Header from '@/components/shared/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Plus, X, MoreHorizontal, Copy, Edit, Trash2, Table, CheckCircle2 } from 'lucide-react';
+import { Plus, X, Table, CheckCircle2, Trash2, Copy, ExternalLink, MoreHorizontal, Edit, Star, Palette, ArrowRight } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
+  ContextMenuSeparator,
 } from '@/components/ui/context-menu';
 import { Checkbox } from '@/components/ui/checkbox';
 
@@ -138,7 +138,7 @@ const Today = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-grow py-8 px-4 ml-16">
+      <main className="flex-grow py-8 px-4">
         <div className="container max-w-7xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold">Today</h1>
@@ -232,22 +232,71 @@ const Today = () => {
                     </CardContent>
                   </Card>
                 </ContextMenuTrigger>
-                <ContextMenuContent>
-                  <ContextMenuItem onClick={() => openTasksModal(column)}>
-                    <Table className="h-4 w-4 mr-2" />
-                    Open in new tab
+                <ContextMenuContent className="w-64">
+                  <div className="px-2 py-1.5">
+                    <Input placeholder="Search actions..." className="h-8" />
+                  </div>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem onClick={() => deleteColumn(column.id)} disabled={columns.length <= 1}>
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                    <span className="ml-auto text-xs text-muted-foreground">Del or Ctrl+D</span>
                   </ContextMenuItem>
                   <ContextMenuItem onClick={() => duplicateColumn(column)}>
                     <Copy className="h-4 w-4 mr-2" />
                     Duplicate
+                    <span className="ml-auto text-xs text-muted-foreground">⌘+D</span>
                   </ContextMenuItem>
-                  <ContextMenuItem 
-                    onClick={() => deleteColumn(column.id)}
-                    disabled={columns.length <= 1}
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
+                  <ContextMenuItem>
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                    Turn into
+                    <ArrowRight className="h-4 w-4 ml-auto" />
                   </ContextMenuItem>
+                  <ContextMenuItem onClick={() => openTasksModal(column)}>
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Open in new tab
+                    <span className="ml-auto text-xs text-muted-foreground">⌘+Shift+↵</span>
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    <Table className="h-4 w-4 mr-2" />
+                    Open in side peek
+                    <span className="ml-auto text-xs text-muted-foreground">⌃+Click</span>
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy link
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Rename
+                    <span className="ml-auto text-xs text-muted-foreground">⌘+Shift+R</span>
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                    Move to
+                    <span className="ml-auto text-xs text-muted-foreground">⌘+Shift+P</span>
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    <Star className="h-4 w-4 mr-2" />
+                    Add to Favorites
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem>
+                    <MoreHorizontal className="h-4 w-4 mr-2" />
+                    Icon
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    <Palette className="h-4 w-4 mr-2" />
+                    Color
+                    <ArrowRight className="h-4 w-4 ml-auto" />
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                    Last edited by Milica Lukic
+                    <br />
+                    Today at 1:12 PM
+                  </div>
                 </ContextMenuContent>
               </ContextMenu>
             ))}
