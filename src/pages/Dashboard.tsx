@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
 import HabitCard from '@/components/habits/HabitCard';
 import EmptyState from '@/components/habits/EmptyState';
 import WeeklyChart from '@/components/stats/WeeklyChart';
@@ -33,9 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      
-      <main className="flex-grow py-8 px-4">
+      <main className="flex-grow py-8 px-4 ml-17 mx-0">
         <div className="container max-w-7xl mx-auto">
           {/* Welcome Section */}
           <section className="mb-8">
@@ -187,8 +183,6 @@ const Dashboard = () => {
           <AddHabitForm onSuccess={() => setAddHabitOpen(false)} />
         </DialogContent>
       </Dialog>
-      
-      <Footer />
     </div>
   );
 };

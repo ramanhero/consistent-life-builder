@@ -14,6 +14,15 @@ import {
   ContextMenuSeparator,
 } from '@/components/ui/context-menu';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import {
+  Table as TableComponent,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface Task {
   id: string;
@@ -22,6 +31,7 @@ interface Task {
   status: 'not started' | 'in progress' | 'completed';
   dueDate?: string;
   tags?: string[];
+  files?: string[];
 }
 
 interface Column {
@@ -136,9 +146,78 @@ const Today = () => {
     setTasksModalOpen(true);
   };
 
+  // Sample task data for the table
+  const sampleTasks = [
+    {
+      id: '1',
+      name: 'Edit Article #18',
+      tags: ['project management', 'blog post'],
+      status: 'completed',
+      dueDate: 'September 3, 2024',
+      files: []
+    },
+    {
+      id: '2',
+      name: 'Research for Article #20',
+      tags: ['productivity', 'blog post'],
+      status: 'in progress',
+      dueDate: 'September 5, 2024',
+      files: ['Procurement R...']
+    },
+    {
+      id: '3',
+      name: 'Write a video script for TikTok',
+      tags: ['time management', 'TikTok'],
+      status: 'not started',
+      dueDate: 'September 6, 2024',
+      files: []
+    },
+    {
+      id: '4',
+      name: 'Prepare presentation for Monthly Team Meet',
+      tags: ['presentation', 'team organization'],
+      status: 'in progress',
+      dueDate: 'September 8, 2024',
+      files: ['Meeting notes...']
+    },
+    {
+      id: '5',
+      name: 'Schedule a meeting with Jessica',
+      tags: ['team organization'],
+      status: 'not started',
+      dueDate: 'September 6, 2024',
+      files: []
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+      case 'in progress':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+      case 'not started':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    }
+  };
+
+  const getTagColor = (tag: string) => {
+    const colors = [
+      'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+      'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+      'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-300',
+      'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+      'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+    ];
+    const index = tag.length % colors.length;
+    return colors[index];
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-grow py-8 px-4">
+      <main className="flex-grow py-8 px-4 ml-17 mx-0">
         <div className="container max-w-7xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold">Today</h1>
@@ -351,97 +430,68 @@ const Today = () => {
 
       {/* Tasks Modal */}
       <Dialog open={tasksModalOpen} onOpenChange={setTasksModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Table className="h-5 w-5" />
-              Tasks - {selectedColumn?.title}
+              Tasks
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div className="border rounded-lg overflow-hidden">
-              <div className="bg-muted/50 p-3 border-b">
-                <h3 className="font-medium">{selectedColumn?.title}</h3>
-              </div>
-              
-              <div className="divide-y">
-                {selectedColumn?.tasks.map((task) => (
-                  <div key={task.id} className="p-4 hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <Checkbox 
-                        checked={task.status === 'completed'}
-                        className="mt-0.5"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{task.title}</span>
-                          {task.tags && task.tags.map(tag => (
-                            <span key={tag} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        {task.description && (
-                          <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm">
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            task.status === 'completed' ? 'bg-green-100 text-green-700' :
-                            task.status === 'in progress' ? 'bg-blue-100 text-blue-700' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {task.status}
-                          </span>
-                        </div>
-                        {task.dueDate && (
-                          <div className="text-xs text-muted-foreground mt-1">
-                            {task.dueDate}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {(!selectedColumn?.tasks || selectedColumn.tasks.length === 0) && (
-                  <div className="p-8 text-center text-muted-foreground">
-                    No tasks in this list yet
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-muted/20 p-4 rounded-lg">
-              <h4 className="font-medium mb-2 text-blue-600">To do:</h4>
-              <ul className="space-y-1">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm">Buy bday present for Dad</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 border-2 border-gray-300 rounded"></div>
-                  <span className="text-sm">Grocery shopping</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm">Call dentist to make appointment</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-muted/20 p-4 rounded-lg">
-              <h4 className="font-medium mb-2 text-red-600">Grocery list:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Fruit</li>
-                <li>• Yogurt</li>
-                <li>• Bread</li>
-                <li>• Coffee, tea</li>
-              </ul>
-            </div>
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">{selectedColumn?.title}</h3>
           </div>
+
+          <TableComponent>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12"></TableHead>
+                <TableHead>Tasks</TableHead>
+                <TableHead>Tags</TableHead>
+                <TableHead>Task Status</TableHead>
+                <TableHead>Due Date</TableHead>
+                <TableHead>Files</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sampleTasks.map((task) => (
+                <TableRow key={task.id}>
+                  <TableCell>
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell className="font-medium">{task.name}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {task.tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className={`text-xs ${getTagColor(tag)}`}>
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className={`text-xs ${getStatusColor(task.status)}`}>
+                      {task.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{task.dueDate}</TableCell>
+                  <TableCell>
+                    {task.files.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {task.files.map((file, index) => (
+                          <span key={index} className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                            {file}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </TableComponent>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setTasksModalOpen(false)}>

@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
 import { useHabits } from '@/contexts/HabitsContext';
 import AddHabitForm from '@/components/habits/AddHabitForm';
 import { Button } from '@/components/ui/button';
@@ -74,9 +72,7 @@ const Habits = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      
-      <main className="flex-grow py-8 px-4">
+      <main className="flex-grow py-8 px-4 ml-17 mx-0">
         <div className="container max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
             <div>
@@ -219,8 +215,6 @@ const Habits = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
-      <Footer />
     </div>
   );
 };

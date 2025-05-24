@@ -1,5 +1,5 @@
+
 import React from 'react';
-import Header from '@/components/shared/Header';
 import WeeklyChart from '@/components/stats/WeeklyChart';
 import MonthlyHabitTracker from '@/components/habits/MonthlyHabitTracker';
 import { useHabits } from '@/contexts/HabitsContext';
@@ -7,20 +7,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Award, Calendar, BarChart, Trophy, Target, Zap } from 'lucide-react';
+
 const Insights = () => {
-  const {
-    habits,
-    isLoading
-  } = useHabits();
+  const { habits, isLoading } = useHabits();
+  
   const getTotalCompletions = () => {
     return habits.reduce((total, habit) => total + habit.completedDates.length, 0);
   };
+
   const getMostConsistentHabit = () => {
     if (habits.length === 0) return null;
     return habits.reduce((most, current) => {
       return current.streak > (most?.streak || 0) ? current : most;
     }, habits[0]);
   };
+
   const getCompletionRate = () => {
     if (habits.length === 0) return 0;
     const totalPossibleDays = habits.reduce((total, habit) => {
@@ -30,10 +31,12 @@ const Insights = () => {
     const totalCompletions = getTotalCompletions();
     return totalPossibleDays > 0 ? Math.round(totalCompletions / totalPossibleDays * 100) : 0;
   };
+
   const getTodayCompletions = () => {
     const today = new Date().toISOString().split('T')[0];
     return habits.filter(habit => habit.completedDates.includes(today)).length;
   };
+
   const getWeeklyCompletions = () => {
     const today = new Date();
     const weekStart = new Date(today);
@@ -46,6 +49,7 @@ const Insights = () => {
       return total + weekCompletions.length;
     }, 0);
   };
+
   const getKarmaScore = () => {
     // Calculate karma based on consistency and completion rates
     const streaks = habits.map(h => h.streak);
@@ -53,9 +57,9 @@ const Insights = () => {
     const completionRate = getCompletionRate();
     return Math.round(avgStreak * 10 + completionRate * 2);
   };
-  return <div className="flex flex-col min-h-screen">
-      <Header />
-      
+
+  return (
+    <div className="flex flex-col min-h-screen">
       <main className="flex-grow py-8 px-4 ml-17 mx-0">
         <div className="container max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -200,9 +204,13 @@ const Insights = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-2">
-                  {isLoading ? <div className="h-64 flex items-center justify-center">
+                  {isLoading ? (
+                    <div className="h-64 flex items-center justify-center">
                       <Skeleton className="h-56 w-full" />
-                    </div> : <WeeklyChart habits={habits} />}
+                    </div>
+                  ) : (
+                    <WeeklyChart habits={habits} />
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -213,6 +221,8 @@ const Insights = () => {
           </Tabs>
         </div>
       </main>
-    </div>;
+    </div>
+  );
 };
+
 export default Insights;
