@@ -1,12 +1,8 @@
-
 import React from 'react';
-import WeeklyChart from '@/components/stats/WeeklyChart';
-import MonthlyHabitTracker from '@/components/habits/MonthlyHabitTracker';
 import { useHabits } from '@/contexts/HabitsContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Award, Calendar, BarChart, Trophy, Target, Zap } from 'lucide-react';
+import { Award, Calendar, BarChart } from 'lucide-react';
 
 const Insights = () => {
   const { habits, isLoading } = useHabits();
@@ -124,38 +120,6 @@ const Insights = () => {
               </CardContent>
             </Card>
           </div>
-          
-          {/* Tab content */}
-          <Tabs defaultValue="monthly" className="mb-8">
-            <TabsList className="mb-6">
-              <TabsTrigger value="weekly">Weekly Overview</TabsTrigger>
-              <TabsTrigger value="monthly">Monthly Tracker</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="weekly">
-              <Card className="shadow-sm">
-                <CardHeader>
-                  <CardTitle>Weekly Progress</CardTitle>
-                  <CardDescription>
-                    Your habit completion over the past week
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-2">
-                  {isLoading ? (
-                    <div className="h-64 flex items-center justify-center">
-                      <Skeleton className="h-56 w-full" />
-                    </div>
-                  ) : (
-                    <WeeklyChart habits={habits} />
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="monthly">
-              <MonthlyHabitTracker />
-            </TabsContent>
-          </Tabs>
         </div>
       </main>
     </div>
