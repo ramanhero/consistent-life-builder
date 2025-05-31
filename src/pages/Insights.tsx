@@ -124,69 +124,6 @@ const Insights = () => {
               </CardContent>
             </Card>
           </div>
-
-          {/* Daily, Weekly, Karma section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="shadow-sm">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-full flex items-center justify-center mb-2">
-                  <Target className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <CardTitle className="text-lg">Daily</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                  {getTodayCompletions()}/{habits.length}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Daily goal completed: {habits.length > 0 ? Math.round(getTodayCompletions() / habits.length * 100) : 0}%
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {getTodayCompletions() === habits.length ? "Well done!" : "Keep going!"}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center mb-2">
-                  <Calendar className="h-6 w-6 text-green-600 dark:text-green-400" />
-                </div>
-                <CardTitle className="text-lg">Weekly</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  {getWeeklyCompletions()}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Habits completed this week
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {getWeeklyCompletions() > 0 ? "Great progress!" : "Start your week strong!"}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-purple-100 dark:bg-purple-950 rounded-full flex items-center justify-center mb-2">
-                  <Zap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <CardTitle className="text-lg">Karma</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                  {getKarmaScore()}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Your consistency score
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {getKarmaScore() > 100 ? "Amazing!" : getKarmaScore() > 50 ? "Good!" : "Keep building!"}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
           
           {/* Tab content */}
           <Tabs defaultValue="monthly" className="mb-8">
